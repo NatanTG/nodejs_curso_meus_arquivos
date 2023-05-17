@@ -12,6 +12,4 @@ function c() {
     b()
 }
 
-b()
 c()
-a()
