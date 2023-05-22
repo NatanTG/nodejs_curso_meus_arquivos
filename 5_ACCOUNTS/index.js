@@ -27,7 +27,9 @@ function operation() {
         else if (action === "Consultar conta") {
             getAccountBalance();
         }
-        else if (action === "Sacar") { }
+        else if (action === "Sacar") {
+            withdraw();
+        }
         else if (action === "Sair") {
             console.log(chalk.blue("Obrigado por usar o Accounts"))
             process.exit()
@@ -37,13 +39,13 @@ function operation() {
 
 
 
-//funções
+//função criar conta
 function createAccount() {
     console.log(chalk.blue("Obrigado por escolher nosso banco!"))
     console.log(chalk.blue("Vamos começar com o cadastro da sua conta."))
     buildAccount()
 }
-
+//função montar conta
 function buildAccount() {
     inquirer.prompt([{
         name: "accountName",
@@ -65,7 +67,7 @@ function buildAccount() {
         operation()
     }).catch((err) => console.log(err));
 }
-
+//função depositar
 function deposit() {
     inquirer.prompt([{
         name: "accountName",
@@ -88,14 +90,14 @@ function deposit() {
         }).catch((err) => console.log(err));
     }).catch((err) => console.log(err));
 }
-
+//função checar conta
 function checkAccount(accountName) {
     if (!fs.existsSync(`./accounts/${accountName}.json`)) {
         console.log(chalk.red("Essa conta não existe!"))
         return false
     } return true
 }
-
+//função adicionar valor
 function addAmount(accountName, amount) {
     const account = getAccount(accountName)
 
@@ -110,6 +112,7 @@ function addAmount(accountName, amount) {
     console.log(chalk.green(`Depósito de ${amount} realizado com sucesso!`))
 }
 
+//função consultar saldo
 function getAccountBalance() {
     inquirer.prompt([{
         name: "accountName",
@@ -124,11 +127,51 @@ function getAccountBalance() {
         operation()
     }).catch((err) => console.log(err));
 }
-
+//função pegar conta
 function getAccount(accountName) {
     const accountJSON = fs.readFileSync(`./accounts/${accountName}.json`, {
         encoding: 'utf8',
         flag: 'r',
     })
     return JSON.parse(accountJSON)
+}
+
+//função sacar
+function withdraw() {
+    inquirer.prompt([{
+        name: "accountName",
+        message: "Qual o nome da sua conta:",
+    }]).then((respostas) => {
+        const accountName = respostas['accountName']
+        if (!checkAccount(accountName)) {
+            return withdraw()
+        }
+        inquirer.prompt([{
+            name: "amount",
+            message: "Qual o valor do saque:",
+        }]).then((respostas) => {
+            const amount = respostas['amount']
+            removeAmount(accountName, amount)
+            operation()
+        }).catch((err) => console.log(err));
+    }).catch((err) => console.log(err));
+
+}
+
+function removeAmount(accountName, amount) {
+    const account = getAccount(accountName)
+
+    if (!amount) {
+        console.log(chalk.red("Valor inválido!"))
+        return withdraw()
+    }
+    if (parseFloat(account.balance) < parseFloat(amount)) {
+        console.log(chalk.red("Saldo insuficiente!"))
+        return withdraw()
+    }
+    account.balance = parseFloat(account.balance) - parseFloat(amount)
+
+    fs.writeFileSync(`./accounts/${accountName}.json`, JSON.stringify(account), function (err) { console.log(err) },)
+
+    console.log(chalk.green(`Saque de ${amount} realizado com sucesso!`))
 }
