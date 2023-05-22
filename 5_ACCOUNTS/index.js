@@ -24,7 +24,9 @@ function operation() {
         else if (action === "Depositar") {
             deposit();
         }
-        else if (action === "Consultar conta") { }
+        else if (action === "Consultar conta") {
+            getAccountBalance();
+        }
         else if (action === "Sacar") { }
         else if (action === "Sair") {
             console.log(chalk.blue("Obrigado por usar o Accounts"))
@@ -58,7 +60,7 @@ function buildAccount() {
             buildAccount()
             return
         }
-        fs.writeFileSync(`./accounts/${accountName}.json`, '{"balance": 0, "statement": []}', function (err) { console.log(err) },)
+        fs.writeFileSync(`./accounts/${accountName}.json`, '{"balance": 0}', function (err) { console.log(err) },)
         console.log(chalk.green("Conta criada com sucesso!"))
         operation()
     }).catch((err) => console.log(err));
@@ -80,7 +82,8 @@ function deposit() {
             message: "Qual o valor do depósito:",
         }]).then((respostas) => {
             const amount = respostas['amount']
-
+            addAmount(accountName, amount)
+            operation()
 
         }).catch((err) => console.log(err));
     }).catch((err) => console.log(err));
@@ -96,12 +99,33 @@ function checkAccount(accountName) {
 function addAmount(accountName, amount) {
     const account = getAccount(accountName)
 
-    console.log(account)
+    if (!amount) {
+        console.log(chalk.red("Valor inválido!"))
+        return deposit()
+    }
+    account.balance = parseFloat(account.balance) + parseFloat(amount)
 
+    fs.writeFileSync(`./accounts/${accountName}.json`, JSON.stringify(account), function (err) { console.log(err) },)
 
+    console.log(chalk.green(`Depósito de ${amount} realizado com sucesso!`))
 }
 
-function getAccount() {
+function getAccountBalance() {
+    inquirer.prompt([{
+        name: "accountName",
+        message: "Qual o nome da sua conta:",
+    }]).then((respostas) => {
+        const accountName = respostas['accountName']
+        if (!checkAccount(accountName)) {
+            return getAccountBalance()
+        }
+        const account = getAccount(accountName)
+        console.log(chalk.green(`O saldo da sua conta é: ${account.balance}`))
+        operation()
+    }).catch((err) => console.log(err));
+}
+
+function getAccount(accountName) {
     const accountJSON = fs.readFileSync(`./accounts/${accountName}.json`, {
         encoding: 'utf8',
         flag: 'r',
