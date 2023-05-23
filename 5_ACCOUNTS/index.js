@@ -4,17 +4,17 @@ import chalk from "chalk";
 
 //modulos internos
 import fs from "fs";
-import { type } from "os";
 
 operation();
 
 function operation() {
+
     inquirer.prompt([
         {
             type: "list",
             name: "action",
             message: "O que você deseja fazer?",
-            choices: ["Criar conta", "Consultar conta", "Depositar", "Sacar", "Sair"],
+            choices: ["Criar conta", "Consultar conta", "Depositar", "Sacar", "Transferir", "Deletar conta", "Sair"],
         },
     ]).then((respostas) => {
         const action = respostas['action']
@@ -29,6 +29,12 @@ function operation() {
         }
         else if (action === "Sacar") {
             withdraw();
+        }
+        else if (action === "Transferir") {
+            transferAmount();
+        }
+        else if (action === "Deletar conta") {
+            deleteAccount();
         }
         else if (action === "Sair") {
             console.log(chalk.blue("Obrigado por usar o Accounts"))
@@ -175,3 +181,101 @@ function removeAmount(accountName, amount) {
 
     console.log(chalk.green(`Saque de ${amount} realizado com sucesso!`))
 }
+function transferAmount() {
+
+    inquirer.prompt([{
+        name: "accountName",
+        message: "Qual o nome da sua conta:",
+    }]).then((respostas) => {
+        const accountName = respostas['accountName']
+        if (!checkAccount(accountName)) {
+            return transferAmount()
+        }
+        inquirer.prompt([{
+            name: "accountName2",
+            message: "Qual conta você deseja transferir:",
+        }]).then((respostas) => {
+            const accountName2 = respostas['accountName2']
+            if (!checkAccount(accountName2)) {
+                return transferAmount()
+            }
+            inquirer.prompt([{
+                name: "amount",
+                message: "Qual o valor da transferência:",
+            }]).then((respostas) => {
+                const amount = respostas['amount']
+                if (!amount || amount <= 0) {
+                    console.log(chalk.red("Valor inválido!"))
+                    return transferAmount()
+                }
+                if (!isValidAmount(getAccount(accountName), amount)) {
+                    console.log(chalk.red("Saldo insuficiente!"));
+                    return operation();
+                }
+                transfer(accountName, accountName2, amount)
+                operation()
+            }).catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
+    }).catch((err) => console.log(err));
+
+}
+
+function transfer(accountName, accountName2, amount) {
+    const account = getAccount(accountName);
+    const account2 = getAccount(accountName2);
+
+    if (!account || !account2) {
+        console.log(chalk.red('Conta(s) inválida(s).'));
+        return;
+    }
+
+    account.balance = parseFloat(account.balance) - parseFloat(amount);
+    account2.balance = parseFloat(account2.balance) + parseFloat(amount);
+
+    fs.writeFileSync(`./accounts/${accountName}.json`, JSON.stringify(account), function (err) {
+        if (err) {
+            console.log(chalk.red('Erro ao gravar os dados da conta de origem:', err));
+        }
+    });
+
+    fs.writeFileSync(`./accounts/${accountName2}.json`, JSON.stringify(account2), function (err) {
+        if (err) {
+            console.log(chalk.red('Erro ao gravar os dados da conta de destino:', err));
+        }
+    });
+
+    console.log(chalk.green(`Transferência de ${amount} realizada com sucesso!`));
+}
+
+function isValidAmount(account, amount) {
+    return parseFloat(account.balance) >= parseFloat(amount);
+}
+
+function deleteAccount() {
+    inquirer.prompt([{
+        name: "accountName",
+        message: "Qual o nome da sua conta:",
+    }]).then((respostas) => {
+        const accountName = respostas['accountName']
+        if (!checkAccount(accountName)) {
+            return deleteAccount()
+        }
+        delet(accountName)
+        operation()
+
+    }).catch((err) => console.log(err));
+}
+
+function delet(accountName) {
+
+    fs.unlink(`./accounts/${accountName}.JSON`, function (err) {
+
+        if (err) {
+            console.log(err)
+            return
+        }
+    })
+    console.log(chalk.green(`Conta removida com sucesso!`))
+}
+
+
