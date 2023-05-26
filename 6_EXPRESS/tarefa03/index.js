@@ -4,7 +4,7 @@ const path = require("path");
 const { router } = require("./users/users.js");
 
 const app = express();
-const port = 3000;
+const port = 5000;
 const basePath = path.join(__dirname, "templates");
 
 app.use(express.urlencoded({ extended: true }));
