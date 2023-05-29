@@ -2,33 +2,33 @@ import express from "express";
 import exphbs from "express-handlebars";
 
 const app = express();
+const hbs = exphbs.create({
+    partialsDir: ["views/partials"],
+})
 
-app.engine("handlebars", exphbs.engine());
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 
+app.get("/blog", (req, res) => {
+    const posts = [
+        {
+            title: "Post 1",
+            content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum!",
+        },
+        {
+            title: "Post 2",
+            content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum!",
+        },
+        {
+            title: "Post 3",
+            content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum!",
+        },
+    ]
 
-app.get("/dashboard", (req, res) => {
-
-    const items = [
-        "item1", "item2", "item3", "item4", "item5"
-    ];
-
-    res.render("dashboard", { items });
-
+    res.render("/blog", { posts });
 });
 
-app.get("/post", (req, res) => {
-
-    const post = {
-        title: "Post 1",
-        content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum!"
-    };
-
-    res.render("post", { post });
-
-
-});
 
 app.get("/", (req, res) => {
     const auth = true;
