@@ -1,0 +1,18 @@
+h1 {
+  color: blue;
+}
+
+
+p {
+  color: gray;
+}
+
+.price {
+  color: green;
+}
+
+.product-image {
+  width: 200px;
+  height: 200px;
+  background-size: cover;
+}
