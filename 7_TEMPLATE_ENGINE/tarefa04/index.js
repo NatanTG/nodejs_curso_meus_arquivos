@@ -7,38 +7,71 @@ app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
 
 
-app.get("/produtos/:id", (req, res) => {
-    const id = req.params.id;
 
-    //leitura da tabela users, resgate do usuário com o id
-    console.log(`User id: ${id}`);
 
-    res.render("product", { id });
 
-}
-);
+app.get('/products/:id', (req, res) => {
+
+    const posts = [
+        {
+            id: 1,
+            title: "Mouse azul bala",
+            content: "Esse mouse é bala e ele é azul",
+        },
+        {
+            id: 2,
+            title: "Helicóptero Robinson R66 Turbine",
+            content: "Equipado com Garmin G1000H NXi, Stormscope, Tail Rotor Camera, Inlet Barrier Filter, Soundprooofing, AutoPilot 3 axis, Aux. Fuel Tank, Wire Strike Kit, etcEssa é a descrição do produto 2",
+
+        },
+        {
+            id: 3,
+            title: "Cigarro eletrônico descartável Elf Bar 4000 puffs recarregável",
+            content: "O Stig Elf Bar BC4000, também conhecido como Pod Elf Bar 4000 puffs, é um cigarro eletrônico descartável leve, prático e fácil de ser levado para qualquer lugar",
+
+        },
+    ];
+
+    const productId = req.params.id;
+    // Lógica para encontrar o produto com o ID fornecido no array de produtos
+    const product = posts.find((product) => product.id === Number(productId));
+
+    if (!product) {
+        res.status(404).send('Produto não encontrado');
+        return;
+    }
+
+    res.render('product', { product, imageUrl: product.image });
+
+});
 
 
 app.get("/", (req, res) => {
 
     const posts = [
         {
-            title: "Produto 1",
-            content: "Essa é a descrição do produto 1",
-            price: 50,
+            id: 1,
+            title: "Mouse azul bala",
         },
         {
-            title: "Produto 2",
-            content: "Essa é a descrição do produto 2",
+            id: 2,
+            title: "Helicóptero Robinson R66 Turbine",
+            content: "Equipado com Garmin G1000H NXi, Stormscope, Tail Rotor Camera, Inlet Barrier Filter, Soundprooofing, AutoPilot 3 axis, Aux. Fuel Tank, Wire Strike Kit, etcEssa é a descrição do produto 2",
+            price: 100.000,
+            image: "https://www.aeronavesavenda.com/wp-content/uploads/2022/09/EXT-22.jpg",
+        },
+        {
+            id: 3,
+            title: "Cigarro eletrônico descartável Elf Bar 4000 puffs recarregável",
+            content: "O Stig Elf Bar BC4000, também conhecido como Pod Elf Bar 4000 puffs, é um cigarro eletrônico descartável leve, prático e fácil de ser levado para qualquer lugar",
             price: 100,
+            image: "https://www.clubedovapor.com/6907-thickbox_default/pod-descartavel-elf-bar-4000-puffs-recarregavel.jpg",
         },
-        {
-            title: "Produto 3",
-            content: "Essa é a descrição do produto 3",
-            price: 150,
-        },
-    ]
+    ];
+
+
     res.render("home", { posts });
+
 
 });
 

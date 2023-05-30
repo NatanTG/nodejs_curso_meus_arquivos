@@ -1,11 +1,16 @@
-<h1>produtos...</h1>
+<!DOCTYPE html>
+<html>
 
-{{#if id==1}}
-<p>Produto 1</p>
-{{else if id==2}}
-<p>Produto 2</p>
-{{else if id==3}}
-<p>Produto 3</p>
-{{else}}
-<p>Produto não encontrado</p>
-{{/if}}
+<head>
+    <title>Detalhes do Produto</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <h1>{{product.title}}</h1>
+    <img src={{product.image}} alt="Imagem do produto">
+    <p>Descrição: {{product.content}}</p>
+    <p>Preço: R${{product.price}}</p>
+</body>
+
+</html>
