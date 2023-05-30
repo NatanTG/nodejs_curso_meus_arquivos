@@ -1,6 +1,12 @@
-<h1>Tarefa 04</h1>
+{{!-- home.handlebars --}}
+<h1>Home</h1>
 
-<p>Produtos:</p>
-{{#each posts2}}
-{{> post}}
-{{/each}}
+<div class="product-container">
+    {{#each products}}
+    <a href="/products/{{id}}" class="product">
+        <div class=" product">
+            <h2>{{title}}</h2>
+            <img src={{image}} alt={{title}}>
+        </div>
+        {{/each}}
+</div>
