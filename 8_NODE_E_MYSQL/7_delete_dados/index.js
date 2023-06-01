@@ -62,6 +62,49 @@ app.get('/books/:id', (req, res) => {
     });
 });
 
+//rota para editar livros
+
+app.get('/books/edit/:id', (req, res) => {
+    const id = req.params.id;
+
+    const sql = `SELECT * FROM books WHERE id = ${id}`;
+
+    conn.query(sql, (err, data) => {
+        if (err) { console.log(err); return }
+
+        const book = data[0];
+        res.render('editbook', { book });
+    });
+});
+
+
+app.post('/books/updatebook/:id', (req, res) => {
+    const id = req.params.id;
+    const title = req.body.title;
+    const pageqty = req.body.pageqty;
+
+    const sql = `UPDATE books SET title = '${title}', pageqty = '${pageqty}' WHERE id = ${id}`;
+
+    conn.query(sql, (err, data) => {
+        if (err) { console.log(err); return }
+
+        res.redirect('/books');
+    });
+});
+
+//rota para deletar livros
+
+app.post('/books/remove/:id', (req, res) => {
+    const id = req.params.id;
+
+    const sql = `DELETE FROM books WHERE id = ${id}`;
+
+    conn.query(sql, (err, data) => {
+        if (err) { console.log(err); return }
+
+        res.redirect('/books');
+    });
+});
 
 //conexao com o banco de dados
 const conn = mysql.createConnection({
