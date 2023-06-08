@@ -112,7 +112,15 @@ app.post('/address/create', async (req, res) => {
 
 });
 
+app.post('/address/delete/:id', async (req, res) => {
+    const userId = req.body.userId;
+    const { id } = req.params;
 
+    await Address.destroy({ where: { id: id } });
+
+    res.redirect(`/users/edit/${userId}`);
+
+});
 
 app.get('/', async (req, res) => {
 

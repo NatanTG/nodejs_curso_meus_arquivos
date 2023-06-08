@@ -57,6 +57,8 @@ app.get('/users/edit/:id', async (req, res) => {
     }
 });
 
+
+
 app.post('/users/update', async (req, res) => {
     const { id, name, occupation } = req.body;
     let newsLetter = req.body.newsLetter;
@@ -80,6 +82,15 @@ app.post('/users/update', async (req, res) => {
 
 
 app.post('/users/delete/:id', async (req, res) => {
+    const { id } = req.params;
+
+    await User.destroy({ where: { id: id } });
+
+
+    res.redirect('/');
+});
+
+app.post('/address/delete/:id', async (req, res) => {
     const { id } = req.params;
 
     await User.destroy({ where: { id: id } });
