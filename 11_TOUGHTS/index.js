@@ -13,6 +13,13 @@ const FileStore = sessionFileStore(session);
 //Models
 import Tought from './models/Tought.js';
 import User from './models/User.js';
+
+//Import routes
+import toughtsRoutes from './routes/toughtsRoutes.js';
+
+//Import controllers
+import ToughtController from './controllers/ToughtControllers.js';
+
 //receber resposta do body
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -52,13 +59,16 @@ app.use((req, res, next) => {
     next();
 });
 
+//routes
+app.use('/toughts', toughtsRoutes);
+
+app.get('/', ToughtController.showToughts);
+
 conn
     //.sync({ force: true })
     .sync()
     .then(() => {
-        app.listen(3000, () => {
-            console.log('Server running on port 3000');
-        });
+        app.listen(3000)
     }).catch((err) => {
         console.log(err);
     });
