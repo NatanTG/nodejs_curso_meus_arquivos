@@ -16,9 +16,10 @@ import User from './models/User.js';
 
 //Import routes
 import toughtsRoutes from './routes/toughtsRoutes.js';
-
+import authRoutes from './routes/authRoutes.js'
 //Import controllers
-import ToughtController from './controllers/ToughtControllers.js';
+import ToughtController from './controllers/ToughtController.js';
+import AuthController from './controllers/AuthController.js';
 
 //receber resposta do body
 app.use(express.urlencoded({ extended: true }));
@@ -61,8 +62,11 @@ app.use((req, res, next) => {
 
 //routes
 app.use('/toughts', toughtsRoutes);
+app.use('/', authRoutes);
+
 
 app.get('/', ToughtController.showToughts);
+
 
 conn
     //.sync({ force: true })

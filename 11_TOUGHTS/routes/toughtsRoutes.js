@@ -1,6 +1,6 @@
 import express from 'express';
-import { Router } from 'express';
-import ToughtController from '../controllers/ToughtControllers.js';
+import Router from 'express';
+import ToughtController from '../controllers/ToughtController.js';
 
 const router = Router();
 
@@ -8,4 +8,4 @@ const router = Router();
 
 router.get('/', ToughtController.showToughts);
 
-export default Router;
+export default router;
