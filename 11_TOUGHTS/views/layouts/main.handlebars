@@ -18,7 +18,7 @@
             <li><a href="/">Pensamentos</a></li>
             <!-- URLS após autenticação -->
             {{#if session.userid}}
-            <li><a href="/tought/dashboard">DashBoard</a></li>
+            <li><a href="/toughts/dashboard">DashBoard</a></li>
             <li><a href="/logout">Sair</a></li>
             {{else}}
             <li><a href="/login">Entrar</a></li>
@@ -27,13 +27,11 @@
         </ul>
     </nav>
     <div class="container">
-        {{#if messages.message}}
+        {{#if message}}
         <div class="message">
-            {{messages.message}}
+            {{message}}
         </div>
-
         {{/if}}
-
         {{{body}}}
     </div>
     <footer>

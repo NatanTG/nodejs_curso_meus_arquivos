@@ -27,8 +27,7 @@ export default class AuthController {
             res.render('auth/login');
             return
         }
-        const createdUser = await User.create(user);
-        req.session.userid = createdUser.id;
+        req.session.userid = user.id;
 
 
         req.session.save(() => {
@@ -44,18 +43,16 @@ export default class AuthController {
 
         if (password !== confirmpassword) {
             req.flash('message', 'As senhas estão diferentes!');
-            res.redirect('/register');
-            return;
+            return res.render('auth/register', { message: req.flash('message') });
         }
-
 
         // Check if user exists
         const checkIfUserExists = await User.findOne({ where: { email: email } });
         if (checkIfUserExists) {
             req.flash('message', 'Email já cadastrado!');
-            res.redirect('/register');
-            return;
+            return res.render('auth/register', { message: req.flash('message') });
         }
+
 
         // Encrypt password
         const salt = bcrypt.genSaltSync(10);
