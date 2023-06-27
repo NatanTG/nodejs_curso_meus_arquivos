@@ -1,8 +1,12 @@
 import Products from '../models/Products.js';
 
-export default class ProductControllers {
-    static showProducts(req, res) {
-        res.render('products/all');
+export default class ToughController {
+    static async showProducts(req, res) {
+        const products = await Products.getProducts()
+
+        console.log(products)
+
+        res.render('products/all', { products })
     }
 
     static createProduct(req, res) {
@@ -13,11 +17,12 @@ export default class ProductControllers {
         const name = req.body.name
         const price = req.body.price
         const description = req.body.description
+        const image = req.body.image
 
-        const product = new Product(name, price, description)
+        const product = new Product(name, price, description, image)
 
         product.save()
 
         res.redirect('/')
     }
-}   
+}

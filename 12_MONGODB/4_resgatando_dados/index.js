@@ -1,8 +1,8 @@
 import express from "express";
 import exphbs from "express-handlebars";
+const app = express();
 import conn from "./db/conn.js";
 import productRoutes from "./routes/productRoutes.js";
-const app = express();
 
 app.engine('handlebars', exphbs.engine());
 app.set('view engine', 'handlebars');
