@@ -13,7 +13,7 @@ export default class ToughController {
         res.render('products/create')
     }
 
-    static createProductPost(req, res) {
+    static async createProductPost(req, res) {
         const name = req.body.name
         const price = req.body.price
         const description = req.body.description
@@ -21,8 +21,17 @@ export default class ToughController {
 
         const product = new Products(name, price, description, image)
 
-        product.save()
+        await product.save()
 
         res.redirect('/')
     }
+
+    static async getProduct(req, res) {
+        const id = req.params.id
+
+        const product = await Products.getProductById(id)
+
+        res.render('products/product', { product })
+    }
+
 }
