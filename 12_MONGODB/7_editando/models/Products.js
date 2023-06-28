@@ -36,10 +36,11 @@ class Product {
     }
 
     static async removeProduct(id) {
+
         await conn
             .db()
             .collection('products')
-            .deleteOne({ _id: ObjectId(id) })
+            .deleteOne({ _id: new ObjectId(id) })
 
         return
     }

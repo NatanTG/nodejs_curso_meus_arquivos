@@ -36,13 +36,36 @@ class Product {
     }
 
     static async removeProduct(id) {
+
         await conn
             .db()
             .collection('products')
-            .deleteOne({ _id: ObjectId(id) })
+            .deleteOne({ _id: new ObjectId(id) })
 
         return
     }
+
+    updateProduct(id) {
+        try {
+            const updateData = {
+                $set: {
+                    name: this.name,
+                    price: this.price,
+                    description: this.description,
+                    image: this.image
+                }
+            };
+            console.log(updateData)
+            conn.db().collection('products').updateOne(
+                { _id: new ObjectId(id) },
+                updateData
+            );
+        } catch (error) {
+            // Trate o erro de atualização aqui
+            console.error('Erro ao atualizar o produto:', error);
+        }
+    }
+
 }
 
 

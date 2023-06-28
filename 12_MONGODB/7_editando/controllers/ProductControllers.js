@@ -48,4 +48,12 @@ export default class ToughController {
 
         res.redirect('/')
     }
+
+    static async editProduct(req, res) {
+        const id = req.params.id
+
+        const product = await Products.getProductById(id)
+
+        res.render('products/edit', { product })
+    }
 }
