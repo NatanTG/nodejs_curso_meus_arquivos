@@ -1,5 +1,6 @@
 import conn from '../db/conn.js'
 import { ObjectId } from 'mongodb'
+const newObjectId = new ObjectId()
 
 class Product {
     constructor(name, price, description, image) {
@@ -45,21 +46,13 @@ class Product {
         return
     }
 
-    updateProduct(id) {
+    async updateProduct(id) {
         try {
-            const updateData = {
-                $set: {
-                    name: this.name,
-                    price: this.price,
-                    description: this.description,
-                    image: this.image
-                }
-            };
-            console.log(updateData)
-            conn.db().collection('products').updateOne(
+            await conn.db().collection('products').updateOne(
                 { _id: new ObjectId(id) },
-                updateData
+                { $set: this }
             );
+
         } catch (error) {
             // Trate o erro de atualização aqui
             console.error('Erro ao atualizar o produto:', error);
