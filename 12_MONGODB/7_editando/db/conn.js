@@ -7,7 +7,7 @@ async function run() {
     try {
         await client.connect();
 
-        console.log("conectando...");
+        console.log("conectado");
 
     } catch (err) {
         console.log(err);

@@ -1,4 +1,5 @@
 import conn from '../db/conn.js'
+import { ObjectId } from 'mongodb'
 
 class Product {
     constructor(name, price, description, image) {
@@ -23,6 +24,25 @@ class Product {
         const products = conn.db().collection('products').find().toArray()
 
         return products
+    }
+
+    static async getProductById(id) {
+
+        const objectId = new ObjectId(id)
+        const product = conn.db().collection('products').findOne({ _id: objectId })
+
+        return product
+
+    }
+
+    static async removeProduct(id) {
+
+        await conn
+            .db()
+            .collection('products')
+            .deleteOne({ _id: new ObjectId(id) })
+
+        return
     }
 }
 
