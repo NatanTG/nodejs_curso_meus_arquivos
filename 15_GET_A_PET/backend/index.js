@@ -6,6 +6,7 @@ const app = express();
 
 //config json
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //solve CORS
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
