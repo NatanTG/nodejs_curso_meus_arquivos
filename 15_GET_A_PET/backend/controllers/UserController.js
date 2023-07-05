@@ -1,7 +1,10 @@
 import User from "../models/User.js";
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+//helpers
 import createUserToken from '../helpers/create-user-token.js';
+import getToken from '../helpers/get-token.js';
 
 export default class UserController {
     static async register(req, res) {
@@ -93,12 +96,12 @@ export default class UserController {
         console.log(req.headers.authorization)
 
         if (req.headers.authorization) {
-            // const token = getToken(req)
-            // const decoded = jwt.verify(token, 'nossosecret')
+            const token = getToken(req)
+            const decoded = jwt.verify(token, 'nossosecret')
 
-            // currentUser = await User.findById(decoded.id)
+            currentUser = await User.findById(decoded.id)
 
-            // currentUser.password = undefined
+            currentUser.password = undefined
         } else {
             currentUser = null
         }
