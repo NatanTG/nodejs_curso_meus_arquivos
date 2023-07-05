@@ -53,6 +53,59 @@ export default class UserController {
             res.status(500).json({ message: error })
         }
     }
+
+    static async login(req, res) {
+        const email = req.body.email
+        const password = req.body.password
+
+        if (!email) {
+            res.status(422).json({ message: 'O e-mail é obrigatório!' })
+            return
+        }
+
+        if (!password) {
+            res.status(422).json({ message: 'A senha é obrigatória!' })
+            return
+        }
+
+        // check if user exists
+        const user = await User.findOne({ email: email })
+
+        if (!user) {
+            res.status(422).json({ message: 'Email ou senha inválida' })
+            return
+        }
+
+        // check if password match
+        const checkPassword = await bcrypt.compare(password, user.password)
+
+        if (!checkPassword) {
+            res.status(422).json({ message: 'Email ou senha inválida' })
+            return
+        }
+
+        await createUserToken(user, req, res)
+    }
+
+    static async checkUser(req, res) {
+        let currentUser
+
+        console.log(req.headers.authorization)
+
+        if (req.headers.authorization) {
+            // const token = getToken(req)
+            // const decoded = jwt.verify(token, 'nossosecret')
+
+            // currentUser = await User.findById(decoded.id)
+
+            // currentUser.password = undefined
+        } else {
+            currentUser = null
+        }
+
+        res.status(200).send(currentUser)
+    }
+
 }
 
 
