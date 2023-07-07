@@ -1,18 +1,20 @@
-import User from "../models/User.js";
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken'
+import User from '../models/User.js'
 
-// get user by jwt token
+//get user by jwt token
 const getUserByToken = async (token) => {
-    if (!token) return res.status(401).json({ error: "Acesso negado!" });
+    if (!token) {
+        return res.status(401).json({ error: "Acesso negado!" })
+    };
 
-    // find user
-    const decoded = jwt.verify(token, "nossosecret");
+    const decoded = jwt.verify(token, 'nossosecret')
 
-    const userId = decoded.id;
+    const userId = decoded.id
 
-    const user = await User.findOne({ _id: userId });
+    const user = await User.findById({ _id: userId })
 
-    return user;
-};
+    return user
 
-export default getUserByToken;
+}
+
+export default getUserByToken
