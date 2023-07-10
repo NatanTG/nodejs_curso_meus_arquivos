@@ -2,15 +2,40 @@ import Pet from '../models/Pet.js';
 
 export default class PetController {
     static async create(req, res) {
+        const { name, age, weight, color } = req.body
+        const images = req.files
+        const available = true
 
-        res.json({ message: 'Pet created' });
+        //image upload
+        if (req.file) {
+            user.image = req.file.filename
+        }
 
+        // validations
+        if (!name) {
+            res.status(422).json({ message: 'O nome é obrigatório!' })
+            return
+        }
+        if (!age) {
+            res.status(422).json({ message: 'A idade é obrigatório!' })
+            return
+        }
+        if (!weight) {
+            res.status(422).json({ message: 'O peso é obrigatório!' })
+            return
+        }
+        if (!color) {
+            res.status(422).json({ message: 'A cor é obrigatório!' })
+            return
+        }
+        if (!images) {
+            res.status(422).json({ message: 'A imagem é obrigatória!' })
+            return
+        }
 
-        // try {
-        //     //     const pet = await Pet.create(req.body);
-        //     //     res.status(200).json(pet);
-        //     // } catch (error) {
-        //     //     res.status(500).json({ error: error.message });
-        // }
+        // get user
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
     }
 }
