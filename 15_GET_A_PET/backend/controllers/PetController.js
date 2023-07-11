@@ -1,15 +1,13 @@
 import Pet from '../models/Pet.js';
+import getToken from '../helpers/get-token.js';
+import ObjectId from 'mongoose';
+import getUserByToken from '../helpers/get-user-by-token.js';
 
 export default class PetController {
     static async create(req, res) {
         const { name, age, weight, color } = req.body
         const images = req.files
         const available = true
-
-        //image upload
-        if (req.file) {
-            user.image = req.file.filename
-        }
 
         // validations
         if (!name) {
@@ -28,7 +26,7 @@ export default class PetController {
             res.status(422).json({ message: 'A cor é obrigatório!' })
             return
         }
-        if (!images) {
+        if (images.length === 0) {
             res.status(422).json({ message: 'A imagem é obrigatória!' })
             return
         }
@@ -37,5 +35,39 @@ export default class PetController {
         const token = getToken(req)
         const user = await getUserByToken(token)
 
+
+        //create pet
+        // create pet
+        const pet = new Pet({
+            name: name,
+            age: age,
+            weight: weight,
+            color: color,
+            available: available,
+            images: [],
+            user: {
+                _id: user._id,
+                name: user.name,
+                image: user.image,
+                phone: user.phone,
+            },
+        })
+
+        images.map((image) => {
+            pet.image.push(image.filename)
+        })
+
+        try {
+            const newPet = await pet.save()
+
+            res.status(201).json({
+                message: 'Pet cadastrado com sucesso!',
+                newPet: newPet,
+            })
+        } catch (error) {
+            res.status(500).json({ message: error })
+            return
+        }
     }
 }
+
