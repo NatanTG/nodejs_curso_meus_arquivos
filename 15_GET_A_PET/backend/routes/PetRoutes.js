@@ -9,5 +9,6 @@ import imageUpload from '../helpers/image-upload.js';
 
 router.post('/create', verifyToken, imageUpload.array('images'), PetController.create);
 router.get('/', PetController.getAll);
+router.get('/mypets', PetController.getAllUserPets);
 
 export default router;
