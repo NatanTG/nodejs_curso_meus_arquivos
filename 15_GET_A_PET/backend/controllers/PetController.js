@@ -1,6 +1,6 @@
 import Pet from '../models/Pet.js';
 import getToken from '../helpers/get-token.js';
-import ObjectId from 'mongoose';
+import ObjectId, { isValidObjectId } from 'mongoose';
 import getUserByToken from '../helpers/get-user-by-token.js';
 
 export default class PetController {
@@ -99,6 +99,28 @@ export default class PetController {
 
         res.status(200).json({
             pets,
+        })
+    }
+
+    static async getPetById(req, res) {
+        const id = req.params.id
+
+        // check if id is valid
+        if (!isValidObjectId(id)) {
+            res.status(422).json({ message: 'ID inválido!' })
+            return
+        }
+
+        // check if pet exists
+        const pet = await Pet.findOne({ _id: id })
+
+        if (!pet) {
+            res.status(404).json({ message: 'Pet não encontrado!' })
+            return
+        }
+
+        res.status(200).json({
+            pet: pet,
         })
     }
 }
