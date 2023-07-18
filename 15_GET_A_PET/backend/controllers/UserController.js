@@ -26,7 +26,7 @@ export default class UserController {
             // ...
         } catch (error) {
             // A validação falhou, retorne a mensagem de erro
-            res.status(422).json({ message: error.details[0].message });
+            res.status(422).json({ message: 'Todos os campos são obrigatórios!' });
             return
         }
 
