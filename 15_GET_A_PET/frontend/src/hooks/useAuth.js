@@ -76,7 +76,7 @@ export default function useAuth() {
     setAuthenticated(false)
     localStorage.removeItem('token')
     api.defaults.headers.Authorization = undefined
-    history.push('/login')
+    history('/login')
 
     setFlashMessage(msgText, msgType)
   }
