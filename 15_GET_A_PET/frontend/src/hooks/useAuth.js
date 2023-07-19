@@ -33,8 +33,7 @@ export default function useAuth() {
       await authUser(data)
     } catch (error) {
       // tratar erro
-
-      msgText = error.response.data.message
+      msgText = error.message
       msgType = 'error'
     }
 
@@ -54,7 +53,7 @@ export default function useAuth() {
       await authUser(data)
     } catch (error) {
       // tratar erro
-      msgText = error.response.data.message
+      msgText = error.message
       msgType = 'error'
     }
 
