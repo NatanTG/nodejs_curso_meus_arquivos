@@ -10,6 +10,11 @@ import Login from './components/pages/Auth/Login'
 import Register from './components/pages/Auth/Register'
 import Home from './components/pages/Home'
 import Profile from './components/pages/User/Profile'
+import MyPets from './components/pages/Pet/MyPets.js'
+// import AddPet from './components/pages/Pet/AddPet.js/index.js'
+// import EditPet from './components/pages/Pet/EditPet.js/index.js'
+// import PetDetails from './components/pages/Pet/PetDetails.js/index.js'
+// import MyAdoptions from './components/pages/Pet/MyAdoptions.js/index.js'
 
 /* contexts */
 import { UserProvider } from './context/UserContext'
@@ -26,6 +31,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user/profile" element={<Profile />} />
+            <Route path="/pet/mypets" element={<MyPets />} />
           </Routes>
         </Container>
         <Footer />
