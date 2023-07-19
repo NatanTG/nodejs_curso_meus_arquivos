@@ -33,9 +33,11 @@ export default function useAuth() {
       await authUser(data)
     } catch (error) {
       // tratar erro
+
       msgText = error.response.data.message
       msgType = 'error'
     }
+
 
     setFlashMessage(msgText, msgType)
   }
@@ -59,11 +61,12 @@ export default function useAuth() {
     setFlashMessage(msgText, msgType)
   }
 
+  //função helper
   async function authUser(data) {
     setAuthenticated(true)
     localStorage.setItem('token', JSON.stringify(data.token))
 
-    history.push('/')
+    history('/')
   }
 
   function logout() {
