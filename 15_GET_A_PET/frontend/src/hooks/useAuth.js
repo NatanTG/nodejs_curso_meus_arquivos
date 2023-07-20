@@ -33,9 +33,10 @@ export default function useAuth() {
       await authUser(data)
     } catch (error) {
       // tratar erro
-      msgText = error.response.data.message
+      msgText = error.message
       msgType = 'error'
     }
+
 
     setFlashMessage(msgText, msgType)
   }
@@ -52,18 +53,19 @@ export default function useAuth() {
       await authUser(data)
     } catch (error) {
       // tratar erro
-      msgText = error.response.data.message
+      msgText = error.message
       msgType = 'error'
     }
 
     setFlashMessage(msgText, msgType)
   }
 
+  //função helper
   async function authUser(data) {
     setAuthenticated(true)
     localStorage.setItem('token', JSON.stringify(data.token))
 
-    history.push('/')
+    history('/')
   }
 
   function logout() {
@@ -73,7 +75,7 @@ export default function useAuth() {
     setAuthenticated(false)
     localStorage.removeItem('token')
     api.defaults.headers.Authorization = undefined
-    history.push('/login')
+    history('/login')
 
     setFlashMessage(msgText, msgType)
   }
