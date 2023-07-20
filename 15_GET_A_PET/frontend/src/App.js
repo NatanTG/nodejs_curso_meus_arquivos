@@ -12,9 +12,9 @@ import Home from './components/pages/Home'
 import Profile from './components/pages/User/Profile'
 import MyPets from './components/pages/Pet/MyPets.js'
 import AddPet from './components/pages/Pet/AddPet.js'
-// import EditPet from './components/pages/Pet/EditPet.js/index.js'
-// import PetDetails from './components/pages/Pet/PetDetails.js/index.js'
-// import MyAdoptions from './components/pages/Pet/MyAdoptions.js/index.js'
+import EditPet from './components/pages/Pet/EditPet.js'
+import PetDetails from './components/pages/Pet/PetDetails.js'
+import MyAdoptions from './components/pages/Pet/MyAdoptions.js'
 
 /* contexts */
 import { UserProvider } from './context/UserContext'
@@ -33,6 +33,9 @@ function App() {
             <Route path="/user/profile" element={<Profile />} />
             <Route path="/pet/mypets" element={<MyPets />} />
             <Route path="/pet/add" element={<AddPet />} />
+            <Route path="/pet/edit/:id" element={<EditPet />} />
+            <Route path="/pet/:id" element={<PetDetails />} />
+            <Route path="/pet/myadoptions" element={<MyAdoptions />} />
           </Routes>
         </Container>
         <Footer />
