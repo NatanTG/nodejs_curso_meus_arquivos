@@ -8,5 +8,5 @@ Este repositório contém as atividades práticas desenvolvidas por mim durante 
 
 ## Organização do Repositório
 
-O repositório está organizado em pastas, cada uma representando um módulo ou tópico específico do curso. Dentro de cada pasta, você encontrará o código fonte dos projetos e exercícios relacionados a esse tópico. Abaixo está a estrutura básica do repositório:
+O repositório está organizado em pastas, cada uma representando um módulo ou tópico específico do curso. Dentro de cada pasta, você encontrará o código fonte dos projetos e exercícios.
 
