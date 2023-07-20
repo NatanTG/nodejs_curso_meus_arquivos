@@ -94,7 +94,7 @@ export default class UserController {
     static async checkUser(req, res) {
         let currentUser
 
-        console.log(req.headers.authorization)
+        // console.log(req.headers.authorization)
 
         if (req.headers.authorization) {
             const token = getToken(req)
